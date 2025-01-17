@@ -2,7 +2,7 @@ use rand::Rng;
 
 pub use array::Array;
 pub use dimension::Dimension;
-pub use numeric::{Float, Numeric};
+pub use numeric::{Float, IntToFloat, Numeric};
 
 mod array;
 mod dimension;

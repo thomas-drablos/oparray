@@ -23,8 +23,12 @@ numeric_impl!(f32, 0.0);
 numeric_impl!(i64, 0);
 numeric_impl!(i32, 0);
 
+pub trait IntToFloat<T>: Sized {
+    fn conv(value: T) -> Self;
+}
+
 pub trait Float:
-    Numeric + Sized + sealed::MakeAssociated<StandardNormal, Same: Distribution<Self>>
+    Numeric + IntToFloat<usize> + sealed::MakeAssociated<StandardNormal, Same: Distribution<Self>>
 {
 }
 
@@ -40,8 +44,20 @@ mod sealed {
     }
 }
 
+macro_rules! int_to_float_impl {
+    ($i:ty, $f:ty) => {
+        impl IntToFloat<$i> for $f {
+            fn conv(value: $i) -> $f {
+                value as $f
+            }
+        }
+    };
+}
+
 macro_rules! float_impl {
     ($t:ty) => {
+        int_to_float_impl!(usize, $t);
+
         impl Float for $t {}
     };
 }
