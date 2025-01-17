@@ -2,7 +2,7 @@ use rand::Rng;
 
 pub use array::Array;
 pub use dimension::Dimension;
-pub use numeric::Numeric;
+pub use numeric::{Float, Numeric};
 
 mod array;
 mod dimension;
@@ -29,10 +29,7 @@ pub fn matmul<N: Numeric>(
     c
 }
 
-pub fn randn<D: Dimension, N: Numeric>(shape: D) -> Array<D, N>
-where
-    rand_distr::StandardNormal: rand_distr::Distribution<N>,
-{
+pub fn randn<D: Dimension, N: Float>(shape: D) -> Array<D, N> {
     let mut rng = rand::thread_rng();
     let data = (0..shape.size())
         .map(|_| rng.sample(rand_distr::StandardNormal))
